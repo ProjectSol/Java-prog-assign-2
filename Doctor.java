@@ -1,6 +1,7 @@
 //Importing necessary libraries
 import java.util.*;
 import java.lang.*;
+import java.io.*;
 
 public class Doctor
 {
@@ -10,13 +11,54 @@ public class Doctor
 	private Doctor[] doctorList;
 	Scanner console = new Scanner(System.in);
 
-  public Doctor[] newDoctor()
+
+
+  public static Doctor[] newDoctor(Doctor[] doctorList)
   { //The line below never completes after applying the suggested change
-
-    doctorList[1] = new Doctor(); 
-
-    return doctorList;
+		//Clinic.printOut(""+doctorList.length);
+		if(doctorList.length != 1)
+		{
+			//Clinic.printOut("We ran the length is not 1 loop");
+			doctorList[doctorList.length-1] = new Doctor();
+			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
+			//Clinic.printOut(doctorList[0].getName());
+		}
+		else
+		{
+			doctorList[0] = new Doctor();
+			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
+			/*Clinic.printOut(""+doctorList.length);
+			Clinic.printOut(doctorList[0].getName());*/
+		}
+		return doctorList;
   }
+
+	public static void listDoctors(Doctor[] doctorList)
+	{
+		//This is our output for listing the doctors, it will output defualt values if it doesn't exist and the proper values if it does. The strings are formatted in the same was as the chooseOption() method
+		Clinic.printOut("Listing Doctors: \n");
+		Clinic.printOut("---------------------------------------------------------------------------------------------------------\n");
+		try
+		{
+			if (doctorList.length == 1)
+			{
+				Clinic.printOut("Nothing to display, please enter a doctor\n");
+			}
+			else
+			{
+				for(int i = 0; i < (doctorList.length-1); i++)
+				{
+					Clinic.printOut("Doctor "+(i+1)+":\n Name: "+doctorList[i].getName()+" Specialisation: "+doctorList[i].getSpecialisation()+"\n");
+				}
+			}
+		}
+		catch(NullPointerException e)
+		{
+			Clinic.printOut("Exception Thrown: "+e+"\nThis was most likely caused by not defining at least one doctor. Please define a doctor\n");
+		}
+
+		Clinic.printOut("---------------------------------------------------------------------------------------------------------");
+	}
 
   /*private void reSize(Doctor[] arr, int newSize)
   {
@@ -39,16 +81,23 @@ public class Doctor
 		String nam;
 		do {
 			nam = console.nextLine();
-			if (1 == 2)
+			if doctorList.length > 1
 			{
-				System.out.println("Two doctorList cannot share the same name, please enter the doctorList name again");
-			}
-			else
-			{
-				loop = -1;
+				for (int i = 0; i < doctorList.length-1; i++ )
+				{
+					if (nam.equals(doctorList[i].getName()))
+					{
+						System.out.println("Two doctorList cannot share the same name, please enter the doctorList name again");
+						break;
+					}
+					else if(i == doctorList.length-2)
+					{
+						loop = -1;
+					}
+				}
 			}
 		} while (loop == 1);
-		this.name = nam;
+		this.name = nam.toUpperCase();
 	}
 
 	// a simple return method. Is self explanatory
@@ -64,7 +113,7 @@ public class Doctor
 		System.out.println("Please enter the specialisation of the Doctor, this specialisation should be cat or dog");
 		do {
 			String spec = console.nextLine();
-			this.specialisation = spec;
+			this.specialisation = spec.toUpperCase();
 
 			if (this.specialisation.equalsIgnoreCase("cat") || this.specialisation.equalsIgnoreCase("dog"))
 			{

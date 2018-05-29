@@ -48,7 +48,6 @@ public class Clinic
 			switch (opt)
 			{
 				case 1:
-					printOut("Hello");
 					doctorList = addDoctor(doctorList);
 					break;
 				case 2:
@@ -113,7 +112,7 @@ public class Clinic
 	}
 
 	//This exists so that I have to type slightly less
-	public void printOut(String string)
+	public static void printOut(String string)
 	{
 		System.out.println(string);
 	}
@@ -126,43 +125,14 @@ public class Clinic
 
 	public Doctor[] addDoctor(Doctor[] doctorList)
 	{
-		printOut(""+doctorList.length);
-		if(doctorList.length != 1)
-		{
-			printOut("We ran the length is not 1 loop");
-			doctorList[doctorList.length-1] = new Doctor();
-			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
-			printOut(doctorList[0].getName());
-		}
-		else
-		{
-			doctorList[0] = new Doctor();
-			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
-			printOut(""+doctorList.length);
-			printOut(doctorList[0].getName());
-		}
+		doctorList = Doctor.newDoctor(doctorList);
 		return doctorList;
 	}
 
 
 	public void listDocs(Doctor[] doctorList)
 	{
-		//This is our output for listing the doctors, it will output defualt values if it doesn't exist and the proper values if it does. The strings are formatted in the same was as the chooseOption() method
-		printOut("Listing Doctors: \n");
-		printOut("---------------------------------------------------------------------------------------------------------\n");
-		try
-		{
-			for(int i = 0; i < (doctorList.length-1); i++)
-			{
-				printOut("Doctor "+(i+1)+":\n Name: "+doctorList[i].getName()+" Specialisation: "+doctorList[i].getSpecialisation()+"\n");
-			}
-		}
-		catch(NullPointerException e)
-		{
-			printOut("Exception Thrown: "+e+"\nThis was most likely caused by not defining at least one doctor. Please define a doctor\n");
-		}
-
-		printOut("---------------------------------------------------------------------------------------------------------");
+		Doctor.listDoctors(doctorList);
 	}
 
 	public Doctor[] removeDoctor(Doctor[] doctorList)
@@ -194,7 +164,7 @@ public class Clinic
 				}
 
 				doctListNew = Arrays.copyOf(doctListNew, doctorList.length-1);
-				
+
 				listDocs(doctListNew);
 				return doctListNew;
 			}
