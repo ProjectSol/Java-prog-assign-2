@@ -49,10 +49,10 @@ public class Clinic
 			{
 				case 1:
 					printOut("Hello");
-					addDoctor(doctorList);
+					doctorList = addDoctor(doctorList);
 					break;
 				case 2:
-					//removeDoctor();
+					doctorList = removeDoctor(doctorList);
 					break;
 				case 3:
 					listDocs(doctorList);
@@ -124,11 +124,12 @@ public class Clinic
 		System.out.print(string);
 	}
 
-	public void addDoctor(Doctor[] doctorList)
+	public Doctor[] addDoctor(Doctor[] doctorList)
 	{
-		printOut("Hello");
+		printOut(""+doctorList.length);
 		if(doctorList.length != 1)
 		{
+			printOut("We ran the length is not 1 loop");
 			doctorList[doctorList.length-1] = new Doctor();
 			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 			printOut(doctorList[0].getName());
@@ -137,8 +138,10 @@ public class Clinic
 		{
 			doctorList[0] = new Doctor();
 			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
+			printOut(""+doctorList.length);
 			printOut(doctorList[0].getName());
 		}
+		return doctorList;
 	}
 
 
@@ -147,12 +150,14 @@ public class Clinic
 		//This is our output for listing the doctors, it will output defualt values if it doesn't exist and the proper values if it does. The strings are formatted in the same was as the chooseOption() method
 		printOut("Listing Doctors: \n");
 		printOut("---------------------------------------------------------------------------------------------------------\n");
-		try {
-			for(int i = 0; i < doctorList.length; i++)
+		try
+		{
+			for(int i = 0; i < (doctorList.length-1); i++)
 			{
 				printOut("Doctor "+(i+1)+":\n Name: "+doctorList[i].getName()+" Specialisation: "+doctorList[i].getSpecialisation()+"\n");
 			}
-		} catch(NullPointerException e)
+		}
+		catch(NullPointerException e)
 		{
 			printOut("Exception Thrown: "+e+"\nThis was most likely caused by not defining at least one doctor. Please define a doctor\n");
 		}
@@ -160,5 +165,46 @@ public class Clinic
 		printOut("---------------------------------------------------------------------------------------------------------");
 	}
 
+	public Doctor[] removeDoctor(Doctor[] doctorList)
+	{
+		listDocs(doctorList);
+		printOut("Are you sure you would like to remove a doctor?\nThis process cannot be undone if you would like remove a doctor please enter the corresponding number eg( 1 for doc1, 2 for doc2 )\nIf you have changed your mind and would not like to delete a doctor, please enter -1\n\n");
+		int numDelete = console.nextInt();
+		if (numDelete != -1)
+		{
+			int docToBeDel = numDelete-1;
+			printOut("Are you sure you would like to delete "+doctorList[numDelete-1].getName()+" type y to delete type n to cancel");
+			String yn = console.next();
+			if (yn.equalsIgnoreCase("y"))
+			{
+				Doctor[] doctListNew = new Doctor[doctorList.length-1];
+
+				for (int i = 0; i < (doctListNew.length-1); i++)
+				{
+					if ( i < docToBeDel )
+					{
+						doctListNew[i] = doctorList[i];
+						printOut(doctListNew[i].getName());
+					}
+					else if ( i >= docToBeDel )
+					{
+						doctListNew[i] = doctorList[i+1];
+						printOut(doctListNew[i].getName());
+					}
+				}
+
+				doctListNew = Arrays.copyOf(doctListNew, doctorList.length-1);
+				
+				listDocs(doctListNew);
+				return doctListNew;
+			}
+			else
+			{
+				printOut("Cancelling doctor removal");
+				return doctorList;
+			}
+		}
+		return doctorList;
+	}
 
 }
