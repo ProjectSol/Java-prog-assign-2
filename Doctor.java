@@ -19,13 +19,13 @@ public class Doctor
 		if(doctorList.length != 1)
 		{
 			//Clinic.printOut("We ran the length is not 1 loop");
-			doctorList[doctorList.length-1] = new Doctor();
+			doctorList[doctorList.length-1] = new Doctor(doctorList);
 			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 			//Clinic.printOut(doctorList[0].getName());
 		}
 		else
 		{
-			doctorList[0] = new Doctor();
+			doctorList[0] = new Doctor(doctorList);
 			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 			/*Clinic.printOut(""+doctorList.length);
 			Clinic.printOut(doctorList[0].getName());*/
@@ -66,22 +66,22 @@ public class Doctor
     return arr2;
   }*/
 
-	public Doctor()
+	public Doctor(Doctor[] doctorList)
 	{
-		setName();
+		setName(doctorList);
 		setSpecialisation();
 	}
 
 	// Defines a scanner object to read input asks the user for a name and recives this input setting it to the current Doctor objects specialisation
 	//It also prevents duplicate names through the use of the dcomp variables and then will force a loop on the user until fixed
-	public void setName()
+	public void setName(Doctor[] doctorList)
 	{
 		System.out.println("Please enter the name of the Doctor");
 		int loop = 1;
 		String nam;
 		do {
 			nam = console.nextLine();
-			if doctorList.length > 1
+			if (doctorList.length > 1)
 			{
 				for (int i = 0; i < doctorList.length-1; i++ )
 				{
@@ -95,6 +95,10 @@ public class Doctor
 						loop = -1;
 					}
 				}
+			}
+			else
+			{
+				loop = -1;
 			}
 		} while (loop == 1);
 		this.name = nam.toUpperCase();
