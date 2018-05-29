@@ -1,6 +1,7 @@
 import java.util.*;
 import java.lang.*;
-  
+import java.io.*;
+
 public class Pet
 {
 	private String type; 	//the type of the pet. It can be only "cat" or "dog".

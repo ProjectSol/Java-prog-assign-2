@@ -20,6 +20,7 @@ public class Clinic
 	private int opt;
 	String comp1,comp2,comp3,comp4,dcomp1,dcomp2;
 	public Doctor[] doctorList = new Doctor[1];
+	public Pet[] petList = new Pet[1];
 	//Player[] thePlayers = new Player[playerCount + 1];
 
 	public static void main(String[] args)
@@ -48,10 +49,10 @@ public class Clinic
 			switch (opt)
 			{
 				case 1:
-					doctorList = addDoctor(doctorList);
+					doctorList = newDoc(doctorList);
 					break;
 				case 2:
-					doctorList = removeDoctor(doctorList);
+					doctorList = removeDoc(doctorList);
 					break;
 				case 3:
 					listDocs(doctorList);
@@ -123,7 +124,7 @@ public class Clinic
 		System.out.print(string);
 	}
 
-	public Doctor[] addDoctor(Doctor[] doctorList)
+	public Doctor[] newDoc(Doctor[] doctorList)
 	{
 		doctorList = Doctor.newDoctor(doctorList);
 		return doctorList;
@@ -132,48 +133,12 @@ public class Clinic
 
 	public void listDocs(Doctor[] doctorList)
 	{
-		Doctor.listDoctors(doctorList);
+ 		Doctor.listDoctors(doctorList);
 	}
 
-	public Doctor[] removeDoctor(Doctor[] doctorList)
+	public Doctor[] removeDoc(Doctor[] doctorList)
 	{
-		listDocs(doctorList);
-		printOut("Are you sure you would like to remove a doctor?\nThis process cannot be undone if you would like remove a doctor please enter the corresponding number eg( 1 for doc1, 2 for doc2 )\nIf you have changed your mind and would not like to delete a doctor, please enter -1\n\n");
-		int numDelete = console.nextInt();
-		if (numDelete != -1)
-		{
-			int docToBeDel = numDelete-1;
-			printOut("Are you sure you would like to delete "+doctorList[numDelete-1].getName()+" type y to delete type n to cancel");
-			String yn = console.next();
-			if (yn.equalsIgnoreCase("y"))
-			{
-				Doctor[] doctListNew = new Doctor[doctorList.length-1];
-
-				for (int i = 0; i < (doctListNew.length-1); i++)
-				{
-					if ( i < docToBeDel )
-					{
-						doctListNew[i] = doctorList[i];
-						printOut(doctListNew[i].getName());
-					}
-					else if ( i >= docToBeDel )
-					{
-						doctListNew[i] = doctorList[i+1];
-						printOut(doctListNew[i].getName());
-					}
-				}
-
-				doctListNew = Arrays.copyOf(doctListNew, doctorList.length-1);
-
-				listDocs(doctListNew);
-				return doctListNew;
-			}
-			else
-			{
-				printOut("Cancelling doctor removal");
-				return doctorList;
-			}
-		}
+		doctorList = Doctor.removeDoctor(doctorList);
 		return doctorList;
 	}
 

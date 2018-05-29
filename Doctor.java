@@ -8,27 +8,37 @@ public class Doctor
 	//defining the global vars for each Doctor object
 	private String name; 	// the name of the Doctor
 	private String specialisation; 	// the specialisation of the Doctor (it can be "dog" or "cat")
-	private Doctor[] doctorList;
+	//private Doctor[] doctorList;
 	Scanner console = new Scanner(System.in);
 
+	//This exists so that I have to type slightly less
+	public static void printOut(String string)
+	{
+		System.out.println(string);
+	}
 
+	//This also exists so that I have to type slig htly less
+	public void printNLN(String string)
+	{
+		System.out.print(string);
+	}
 
   public static Doctor[] newDoctor(Doctor[] doctorList)
   { //The line below never completes after applying the suggested change
-		//Clinic.printOut(""+doctorList.length);
+		//printOut(""+doctorList.length);
 		if(doctorList.length != 1)
 		{
-			//Clinic.printOut("We ran the length is not 1 loop");
+			//printOut("We ran the length is not 1 loop");
 			doctorList[doctorList.length-1] = new Doctor(doctorList);
 			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
-			//Clinic.printOut(doctorList[0].getName());
+			//printOut(doctorList[0].getName());
 		}
 		else
 		{
 			doctorList[0] = new Doctor(doctorList);
 			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
-			/*Clinic.printOut(""+doctorList.length);
-			Clinic.printOut(doctorList[0].getName());*/
+			/*printOut(""+doctorList.length);
+			printOut(doctorList[0].getName());*/
 		}
 		return doctorList;
   }
@@ -36,28 +46,28 @@ public class Doctor
 	public static void listDoctors(Doctor[] doctorList)
 	{
 		//This is our output for listing the doctors, it will output defualt values if it doesn't exist and the proper values if it does. The strings are formatted in the same was as the chooseOption() method
-		Clinic.printOut("Listing Doctors: \n");
-		Clinic.printOut("---------------------------------------------------------------------------------------------------------\n");
+		printOut("Listing Doctors: \n");
+		printOut("---------------------------------------------------------------------------------------------------------\n");
 		try
 		{
 			if (doctorList.length == 1)
 			{
-				Clinic.printOut("Nothing to display, please enter a doctor\n");
+				printOut("Nothing to display, please enter a doctor\n");
 			}
 			else
 			{
 				for(int i = 0; i < (doctorList.length-1); i++)
 				{
-					Clinic.printOut("Doctor "+(i+1)+":\n Name: "+doctorList[i].getName()+" Specialisation: "+doctorList[i].getSpecialisation()+"\n");
+					printOut("Doctor "+(i+1)+":\n Name: "+doctorList[i].getName()+" Specialisation: "+doctorList[i].getSpecialisation()+"\n");
 				}
 			}
 		}
 		catch(NullPointerException e)
 		{
-			Clinic.printOut("Exception Thrown: "+e+"\nThis was most likely caused by not defining at least one doctor. Please define a doctor\n");
+			printOut("Exception Thrown: "+e+"\nThis was most likely caused by not defining at least one doctor. Please define a doctor\n");
 		}
 
-		Clinic.printOut("---------------------------------------------------------------------------------------------------------");
+		printOut("---------------------------------------------------------------------------------------------------------");
 	}
 
   /*private void reSize(Doctor[] arr, int newSize)
@@ -137,5 +147,48 @@ public class Doctor
 	public String getSpecialisation()
 	{
 		return specialisation;
+	}
+
+	public static Doctor[] removeDoctor(Doctor[] doctorList)
+	{
+		Scanner console = new Scanner(System.in);
+		listDoctors(doctorList);
+		printOut("Are you sure you would like to remove a doctor?\nThis process cannot be undone if you would like remove a doctor please enter the corresponding number eg( 1 for doc1, 2 for doc2 )\nIf you have changed your mind and would not like to delete a doctor, please enter -1\n\n");
+		int numDelete = console.nextInt();
+		if (numDelete != -1)
+		{
+			int docToBeDel = numDelete-1;
+			printOut("Are you sure you would like to delete "+doctorList[numDelete-1].getName()+" type y to delete type n to cancel");
+			String yn = console.next();
+			if (yn.equalsIgnoreCase("y"))
+			{
+				Doctor[] doctListNew = new Doctor[doctorList.length-1];
+
+				for (int i = 0; i < (doctListNew.length-1); i++)
+				{
+					if ( i < docToBeDel )
+					{
+						doctListNew[i] = doctorList[i];
+						printOut(doctListNew[i].getName());
+					}
+					else if ( i >= docToBeDel )
+					{
+						doctListNew[i] = doctorList[i+1];
+						printOut(doctListNew[i].getName());
+					}
+				}
+
+				doctListNew = Arrays.copyOf(doctListNew, doctorList.length-1);
+
+				listDoctors(doctListNew);
+				return doctListNew;
+			}
+			else
+			{
+				printOut("Cancelling doctor removal");
+				return doctorList;
+			}
+		}
+		return doctorList;
 	}
 }
