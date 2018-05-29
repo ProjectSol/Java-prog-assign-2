@@ -13,7 +13,7 @@ public class Doctor
   public Doctor[] newDoctor()
   { //The line below never completes after applying the suggested change
 
-    doctorList[1] = new Doctor();
+    doctorList[1] = new Doctor(); 
 
     return doctorList;
   }

@@ -19,7 +19,7 @@ public class Clinic
 	Scanner console = new Scanner(System.in);
 	private int opt;
 	String comp1,comp2,comp3,comp4,dcomp1,dcomp2;
-	public Doctor[] doctorList;// = new Doctor[1];
+	public Doctor[] doctorList = new Doctor[1];
 	//Player[] thePlayers = new Player[playerCount + 1];
 
 	public static void main(String[] args)
@@ -41,7 +41,6 @@ public class Clinic
 			if (runcounter == 1)
 			{
 				printOut("\nEnter any character to return to the menu");
-				printOut(""+doctorList[0].getName());
 				console.next();
 			}
 			runcounter = 1;
@@ -49,6 +48,7 @@ public class Clinic
 			switch (opt)
 			{
 				case 1:
+					printOut("Hello");
 					addDoctor(doctorList);
 					break;
 				case 2:
@@ -126,15 +126,17 @@ public class Clinic
 
 	public void addDoctor(Doctor[] doctorList)
 	{
-		if(doctorList.length)
+		printOut("Hello");
+		if(doctorList.length != 1)
 		{
-			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 			doctorList[doctorList.length-1] = new Doctor();
+			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 			printOut(doctorList[0].getName());
 		}
 		else
 		{
-			doctorList[doctorList.length-1] = new Doctor();
+			doctorList[0] = new Doctor();
+			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 			printOut(doctorList[0].getName());
 		}
 	}
@@ -145,10 +147,16 @@ public class Clinic
 		//This is our output for listing the doctors, it will output defualt values if it doesn't exist and the proper values if it does. The strings are formatted in the same was as the chooseOption() method
 		printOut("Listing Doctors: \n");
 		printOut("---------------------------------------------------------------------------------------------------------\n");
-		for(int i = 0; i < doctorList.length; i++)
+		try {
+			for(int i = 0; i < doctorList.length; i++)
+			{
+				printOut("Doctor "+(i+1)+":\n Name: "+doctorList[i].getName()+" Specialisation: "+doctorList[i].getSpecialisation()+"\n");
+			}
+		} catch(NullPointerException e)
 		{
-			printOut("Doctor "+i+":\n Name: "+doctorList[i].getName()+" Specialisation: "+doctorList[i].getSpecialisation());
+			printOut("Exception Thrown: "+e+"\nThis was most likely caused by not defining at least one doctor. Please define a doctor\n");
 		}
+
 		printOut("---------------------------------------------------------------------------------------------------------");
 	}
 
