@@ -1,24 +1,28 @@
 Pets
 type cat
 size small
-name Lara
-weight 4
+name lara
+weight 4.0
 age 5
-doctor Joao
+doctor joao
 type dog
 size large
-name Biro
-weight 15
+name biro
+weight 15.0
 age 12
-doctor Maria
+doctor maria
 type cat
 size large
-name Benny
-weight 7
+name benny
+weight 7.0
 age 10
 doctor no doctor assigned
 Doctors
-name Joao
+name  joao
 specialisation cat
-name Maria
+name  maria
+specialisation dog
+name  steve
+specialisation cat
+name  john
 specialisation dog

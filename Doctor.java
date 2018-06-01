@@ -24,22 +24,10 @@ public class Doctor
 	}
 
   public static Doctor[] newDoctor(Doctor[] doctorList)
-  { //The line below never completes after applying the suggested change
-		//printOut(""+doctorList.length);
-		if(doctorList.length != 1)
-		{
-			//printOut("We ran the length is not 1 loop");
-			doctorList[doctorList.length-1] = new Doctor(doctorList);
-			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
-			//printOut(doctorList[0].getName());
-		}
-		else
-		{
-			doctorList[0] = new Doctor(doctorList);
-			doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
-			/*printOut(""+doctorList.length);
-			printOut(doctorList[0].getName());*/
-		}
+  {
+		//much the same as the newPet function check that
+		doctorList[doctorList.length-1] = new Doctor(doctorList, 1);
+		doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 		return doctorList;
   }
 
@@ -64,7 +52,7 @@ public class Doctor
 		}
 		catch(NullPointerException e)
 		{
-			printOut("Exception Thrown: "+e+"\nThis was most likely caused by not defining at least one doctor. Please define a doctor\n");
+			printOut("Exception Thrown: "+e+"\n");
 		}
 
 		printOut("---------------------------------------------------------------------------------------------------------");
@@ -76,10 +64,18 @@ public class Doctor
     return arr2;
   }*/
 
-	public Doctor(Doctor[] doctorList)
+	public Doctor(Doctor[] doctorList, int selection)
 	{
-		setName(doctorList);
-		setSpecialisation();
+		//The same as Pet constructor, check there
+		if(selection != -1)
+		{
+			setName(doctorList);
+			setSpecialisation();
+		}
+		else
+		{
+
+		}
 	}
 
 	// Defines a scanner object to read input asks the user for a name and recives this input setting it to the current Doctor objects specialisation
@@ -90,12 +86,12 @@ public class Doctor
 		int loop = 1;
 		String nam;
 		do {
-			nam = console.nextLine();
+			nam = " "+console.nextLine();
 			if (doctorList.length > 1)
 			{
 				for (int i = 0; i < doctorList.length-1; i++ )
 				{
-					if (nam.equals(doctorList[i].getName()))
+					if (nam.equalsIgnoreCase(doctorList[i].getName()))
 					{
 						System.out.println("Two doctorList cannot share the same name, please enter the doctorList name again");
 						break;
@@ -114,13 +110,32 @@ public class Doctor
 		this.name = nam.toUpperCase();
 	}
 
+	//This all works the way the pets set file functions work, so I'll follow it in the same way
+	public void setNameFile(Doctor[] doctorList, String docName)
+	{
+		String nam = docName;
+		this.name = " "+nam.toUpperCase();
+		if (doctorList.length > 1)
+		{
+			for (int i = 0; i < doctorList.length-1; i++ )
+			{
+				if (nam.equalsIgnoreCase(doctorList[i].getName()))
+				{
+					System.out.println("Two doctorList cannot share the same name\nThis doctor has an error and will not be added to the list of doctors");
+					name = "-999";
+				}
+			}
+		}
+	}
+
 	// a simple return method. Is self explanatory
 	public String getName()
 	{
 		return name;
 	}
 
-	// Defines a scanner object to read input asks the user for a specialisation and recives this input setting it to the current Doctor objects specialisation also prevents the assinging of the input unless the user input dog or cat
+	// Defines a scanner object to read input asks the user for a specialisation and recives this input setting it to
+	//the current Doctor objects specialisation also prevents the assinging of the input unless the user input dog or cat
 	public void setSpecialisation()
 	{
 		int loop = 1;
@@ -131,9 +146,9 @@ public class Doctor
 
 			if (this.specialisation.equalsIgnoreCase("cat") || this.specialisation.equalsIgnoreCase("dog"))
 			{
-				//this.specialisation = spec;
+
 				loop = -1;
-				//System.out.print("It ran this");
+
 			}
 			else
 			{
@@ -143,12 +158,29 @@ public class Doctor
 		} while (loop == 1);
 	}
 
+	public void setSpecialisationFile(String docSpecialisation)
+	{
+		String spec = docSpecialisation;
+		this.specialisation = spec.toUpperCase();
+
+		if (this.specialisation.equalsIgnoreCase("cat") || this.specialisation.equalsIgnoreCase("dog"))
+		{
+		}
+		else
+		{
+			System.out.println("The specialisation must be either dog or cat\nThis doctor has an error and will not be added to the list of doctors");
+			name = "-999";
+		}
+	}
+
 	// a simple return method. Is self explanatory
 	public String getSpecialisation()
 	{
 		return specialisation;
 	}
 
+	//Removes doctors, remakes the list without adding the removed doctor then shrinks the size of the array.
+	//The function to remove doctors that no longer exist from their pets is placed elsewhere
 	public static Doctor[] removeDoctor(Doctor[] doctorList)
 	{
 		Scanner console = new Scanner(System.in);
@@ -186,6 +218,23 @@ public class Doctor
 			else
 			{
 				printOut("Cancelling doctor removal");
+				return doctorList;
+			}
+		}
+		return doctorList;
+	}
+
+	//Makes doctors from files, calling all the set file functions and that jazz
+	public static Doctor[] newDocFromFile(Doctor[] doctorList, Pet[] petList, String docName, String docSpecialisation)
+	{
+		doctorList[doctorList.length-1] = new Doctor(doctorList, -1);
+		doctorList[doctorList.length-1].setNameFile(doctorList, docName);
+		if(!doctorList[doctorList.length-1].getName().equals("-999"))
+		{
+			doctorList[doctorList.length-1].setSpecialisationFile(docSpecialisation);
+			if(!doctorList[doctorList.length-1].getName().equals("-999"))
+			{
+				doctorList = Arrays.copyOf(doctorList, doctorList.length+1);
 				return doctorList;
 			}
 		}
